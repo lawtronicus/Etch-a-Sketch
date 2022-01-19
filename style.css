@@ -1,0 +1,65 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* begin header styling */
+
+header {
+    display: flex;
+    justify-content: space-around;
+    height: 8%;
+    flex: 0;
+    background-color: palegreen;
+}
+
+/* end header styling */
+
+/* begin main styling */
+
+main {
+    flex: 1 1 auto;
+    display: flex;
+}
+
+.sketch-container {
+    flex: 1;
+    display: grid;
+}
+
+.firstColor{
+    background-color: blue;
+}
+
+.sketch-container div:hover {
+    background-color: pink;
+}
+
+.secondColor {
+    background-color: pink;
+}
+
+/* end main styling */
+
+/* begin footer styling */
+
+footer {
+    height: 8%;
+    flex: 0;
+    background-color: palegreen;
+    display: flex;
+    justify-content: center;
+}
+
+/* end footer styling */
