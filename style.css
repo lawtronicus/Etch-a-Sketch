@@ -23,7 +23,7 @@ header {
     justify-content: space-around;
     color: white;
     align-items: center;
-    font-size: 28px;
+    font-size: 24px;
     background: #555555;
     padding: .5em;
 }
@@ -46,6 +46,11 @@ header p {
 
 .logo {
     font-family: Lobster;
+}
+
+.title {
+    font-size: 50px;
+    font-weight: 700;
 }
 /* end header styling */
 

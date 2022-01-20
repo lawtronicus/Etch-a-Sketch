@@ -70,8 +70,10 @@ const changeClass = function () {
 /*    this.style.backgroundColor = "pink"; */
 };
 
+/* set initial grid */
 adaptContainer(sketchGrid, defaultRows, defaultColumns);
 
 appendCells(sketchGrid, defaultRows, defaultColumns, createCell);
 
+/* let user set grid */
 gridButton.addEventListener('click', rebuildGridFromUser);
