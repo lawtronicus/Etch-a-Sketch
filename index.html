@@ -12,12 +12,30 @@
 </head>
 <body>
     <header>
-        <p class="logo">Logo</p>
-        <p class="title">Etch - a - Sketch</p>
-        <div class="setGrid"><p>Set Grid</p></div>
+        <p class="logo">an Odin Project project</p>
     </header>
     <main>
-        <div class="sketch-container">
+        <div class="controls">
+            <div class="color-selection">
+                <input type="color" id="color-display" name="color-display" value="#223251">
+                <button class="single-color single-color-clicked button">Single Color</button>
+                <button class="rainbow button">Rainbow</button>
+            </div>
+            <div class="density">
+                <p class="density-title">Density</p>
+                <div class="slidecontainer">
+                    <input type="range" min="1" max="100" value="20" class="slider" id="myRange">
+                </div>
+                <div id="size-display-container">
+                    <p id="size-display">16 x 16</p>
+                </div>
+            </div>
+        </div>
+        <div class="frame">
+            <p class="etch-a-sketch">Etch-a-Sketch</p>
+            <div class="sketch-container">              
+            </div>
+            <div class="erase button"></div>
         </div>
     </main>
     <footer>

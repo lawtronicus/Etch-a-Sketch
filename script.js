@@ -1,79 +1,118 @@
-const defaultRows = 16;
-const defaultColumns = 16;
-const sketchGrid = document.querySelector('.sketch-container');
-const gridButton = document.querySelector(".setGrid");
+const slider = document.getElementById("myRange");
+const rainbowButton = document.querySelector('.rainbow');
+const singleColorButton = document.querySelector('.single-color')
+const eraseButton = document.querySelector('.erase');
+const colorInput = document.getElementById('color-display');
+let currentMode = 'single-color';
 
-const getGridSize = () => prompt('How many squares would you like per side? Max is 100.');
 
-const informWrongNumber = () => alert("Apologies. I cannot process that number.");
-
-const setGridSize = function () {
-    gridSize = parseInt(getGridSize());
-    if (gridSize > 100 || gridSize <= 0 || isNaN(gridSize)) {
-        informWrongNumber();
-        return setGridSize();
-    } else {
-        return gridSize;
-    }
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+    let output = document.getElementById("size-display");
+      output.innerHTML = `${getSize()} x ${getSize()}`;
 };
 
-const rebuildGridFromUser = function () {
-    let gridSize = setGridSize();
-    const grid = document.querySelector('.sketch-container');
-    console.log(grid.childElementCount);
-    while (grid.firstChild) {
-        grid.firstChild.remove();
-    }
-    console.log(grid.childElementCount);
-    adaptContainer(sketchGrid, gridSize, gridSize);
-    appendCells(sketchGrid, gridSize, gridSize, createCell);
-    console.log(grid.childElementCount);
-}
-
-
-const adaptContainer = function (container, rowNum, colNum) {
-    container.style['grid-template-rows'] = `repeat(${rowNum}, 1fr)`;
-    container.style['grid-template-columns'] = `repeat(${colNum}, 1fr)`;
-
-};
-
-const appendCells = function (parent, rowNum, colNum, cellCreator) {
-    for (let i = 1; i <= rowNum * colNum; i++) {
-        newChild = cellCreator();
-        newChild.classList.add('color1');
-        mouseOverChange(newChild);
-        parent.append(newChild);
+/* change single color button if already selected but new color is selected */
+const changeButtonColor = function () {
+    if (currentMode === 'single-color') {
+        singleColorButton.style.backgroundColor = getColor();
+        singleColorButton.style.textShadow = '-1px -1px 0px black, 1px -1px black, -1px 1px black, 1px 1px black'
     }
 }
-
-
-const createCell = function () {
-    let cell = document.createElement("div");
-
-    return cell;
-}
-
-const mouseOverChange = (cell) => cell.addEventListener('mouseover', changeClass);
-const changeClass = function () {
-    let colorClass = this.classList[this.classList.length - 1];
-    let colorNum = parseInt(colorClass.charAt(colorClass.length - 1));
-    if (colorNum != 8) {
-        colorNum ++;
-        newClass = "color" + colorNum.toString();
-        this.classList.remove(this.classList[this.classList.length - 1]);
-        this.classList.add(newClass);
-    } else {
-        this.classList.remove(this.classList[this.classList.length-1]);
-        this.classList.add("color1");
-    }
     
-/*    this.style.backgroundColor = "pink"; */
+/* get color value */
+const getColor = function () {
+    return document.getElementById("color-display").value;
 };
 
-/* set initial grid */
-adaptContainer(sketchGrid, defaultRows, defaultColumns);
+/* get size of grid area */
+const getSize = function () {
+    return document.getElementById("myRange").value;
+};
 
-appendCells(sketchGrid, defaultRows, defaultColumns, createCell);
+const paintGrid = function (cell) {
+    let color = document.getElementById("color-display");
+    cell.style.backgroundColor = color;
+};
 
-/* let user set grid */
-gridButton.addEventListener('click', rebuildGridFromUser);
+/* change button colors when selected or deselected */
+const rainbowButtonFocus = function () {
+    this.classList.add('rainbow-clicked');
+    currentMode = 'rainbow';
+}
+
+const singleColorButtonFocus = function () {
+    console.log(this);
+    this.style.backgroundColor = getColor();
+    this.style.color = "white";
+    this.style.textShadow = '-1px -1px 0px black, 1px -1px black, -1px 1px black, 1px 1px black'
+    currentMode = 'single-color';
+}
+
+const removeRainbowButtonFocus = function () {
+    rainbowButton.classList.remove('rainbow-clicked');
+}
+
+const removeSingleColorButtonFocus = function () {
+    singleColorButton.style.backgroundColor = 'white';
+    singleColorButton.style.color = `var(--text-color)`;
+    singleColorButton.style.textShadow = 'none'
+}
+
+rainbowButton.addEventListener('click', rainbowButtonFocus);
+rainbowButton.addEventListener('click', removeSingleColorButtonFocus);
+singleColorButton.addEventListener('click', removeRainbowButtonFocus);
+singleColorButton.addEventListener('click', singleColorButtonFocus);
+
+const setSketch = function () {
+
+    const sketchArea = document.querySelector('.sketch-container');
+
+    /* if sketch area already has cells, remove them */
+    while (sketchArea.firstChild) {
+        sketchArea.firstChild.remove();
+    }
+
+    /* apply inputs to etch a sketch container */
+    const setGridSize = function () {
+        const size = document.getElementById("myRange");
+        return size.value;
+    }
+
+    /* set properties for container */
+    const adaptContainer = function (container, size) {
+        container.style['grid-template-rows'] = `repeat(${size}, 1fr)`;
+        container.style['grid-template-columns'] = `repeat(${size}, 1fr)`;
+    }
+
+    /* append appropriate number of cells to container */
+    const appendCells = function (parent, size) {
+        for (let i = 1; i <= size**2; i++) {
+            let cell = document.createElement("div");
+            cell.addEventListener('mouseover', changeColor);
+            parent.append(cell);
+        }
+    }
+
+    adaptContainer(sketchArea, setGridSize());
+    appendCells(sketchArea, setGridSize());
+};
+
+function changeColor(e) {
+    if (currentMode === "rainbow") {
+        const randomR = Math.floor(Math.random() * 256)
+        const randomG = Math.floor(Math.random() * 256)
+        const randomB = Math.floor(Math.random() * 256)
+        e.target.style.backgroundColor = `rgb(${randomR}, ${randomG}, ${randomB})`
+    } else {
+        e.target.style.backgroundColor = getColor();
+    }
+};
+
+/* set initial sketch area */
+setSketch();
+
+/* recreate sketch area if density is changed */
+slider.addEventListener('change', setSketch);
+eraseButton.addEventListener('click', setSketch);
+colorInput.addEventListener('change', changeButtonColor);
