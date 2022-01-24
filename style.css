@@ -23,7 +23,7 @@ html {
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100%;
     margin: 0;
     font-family: 'Source Sans Pro', sans-serif;
 }
@@ -31,6 +31,7 @@ body {
 /* begin header styling */
 
 header {
+    flex: 0;
     display: flex;
     height: 1.5em;
     color: white;
@@ -188,7 +189,7 @@ main {
     display: flex;
     flex-direction: column;
     background-color: var(--contrast-color);
-    margin: 3em;
+    margin: 1em;
     border-radius: 3em;
     padding: 0em 3em 0em 3em;
     box-shadow: 5px 5px 5px rgba(0,0,0,.4);
@@ -231,7 +232,7 @@ main {
 /* begin footer styling */
 
 footer {
-    padding: 0;
+    flex: 0;
     padding: .5em;
     background-color: palegreen;
     display: flex;
